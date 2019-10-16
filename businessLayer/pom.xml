@@ -9,24 +9,45 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.axa.mx</groupId>
-	<artifactId>apiIntegrationLayer</artifactId>
+	<artifactId>businessLayer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>apiIntegrationLayer</name>
-	<description>apiIntegrationLayer proyect</description>
+	<name>businessLayer</name>
+	<description>businessLayer proyect</description>
 
 	<properties>
 		<java.version>1.8</java.version>
+		<log4j.version>1.2.17</log4j.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.axa.mx</groupId>
+			<artifactId>persistenceLayer</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 		
 		<dependency>
@@ -34,27 +55,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>com.axa.mx</groupId>
-			<artifactId>appServicesLayer</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
+		
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>
