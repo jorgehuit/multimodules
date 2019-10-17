@@ -47,6 +47,8 @@ public class CondicionServiceImpl implements CondicionService {
 		condicionServiceDto.setTexto(condicionBusinessDto.getTexto());
 		condicionServiceDto.setTipo(condicionBusinessDto.getTipo());
 		condicionServiceDto.setTitulo(condicionBusinessDto.getTitulo());
+		condicionServiceDto.setIdGenerado(condicionBusinessDto.getIdGenerado());
+		condicionServiceDto.setEstatus(condicionBusinessDto.getEstatus());
 		
 		return condicionServiceDto;
 	}

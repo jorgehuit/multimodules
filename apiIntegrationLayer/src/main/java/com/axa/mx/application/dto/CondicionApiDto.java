@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CondicionApiDto {
+	private String idGenerado;
 	private String tipo;
 	private String titulo;
 	private String descripcion;
 	private String texto;
+	private Integer estatus;
 }

@@ -16,9 +16,11 @@ public class Condicion {
 	@Id
 	@GeneratedValue
 	private Long id;
+	private String idGenerado;
 	private String tipo;
 	private String titulo;
 	private String descripcion;
 	private String texto;
+	private Integer estatus;
 
 }

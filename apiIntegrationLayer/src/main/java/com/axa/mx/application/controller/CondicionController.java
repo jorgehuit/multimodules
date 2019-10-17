@@ -59,6 +59,8 @@ public class CondicionController {
 		condicionApiDto.setTexto(condicionServiceDto.getTexto());
 		condicionApiDto.setTipo(condicionServiceDto.getTipo());
 		condicionApiDto.setTitulo(condicionServiceDto.getTitulo());
+		condicionApiDto.setIdGenerado(condicionServiceDto.getIdGenerado());
+		condicionApiDto.setEstatus(condicionServiceDto.getEstatus());
 		
 		return condicionApiDto;
 	}
