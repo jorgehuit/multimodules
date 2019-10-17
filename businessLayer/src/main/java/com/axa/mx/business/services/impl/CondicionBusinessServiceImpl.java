@@ -35,7 +35,7 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	public String insertCondicion(CondicionInsertBusinessDto condicionInsertBusinessDto) {
 		Condicion condicionEntity = condicionRepository.save(createInsertCondicion(condicionInsertBusinessDto));
 		
-		return condicionEntity != null ? "Insert Correct" : null;
+		return condicionEntity != null ? "Insert Correct " + condicionEntity.getId() : null;
 	}
 
 	private Condicion createInsertCondicion(CondicionInsertBusinessDto condicionInsertBusinessDto) {
