@@ -8,11 +8,15 @@ import org.springframework.stereotype.Service;
 
 import com.axa.mx.business.dto.CondicionBusinessDto;
 import com.axa.mx.business.dto.CondicionInsertBusinessDto;
+import com.axa.mx.business.exception.ResourceNotFoundException;
 import com.axa.mx.business.services.CondicionBusinessService;
 import com.axa.mx.persistence.entity.Condicion;
 import com.axa.mx.persistence.repository.CondicionRepository;
 
+import lombok.extern.log4j.Log4j;
+
 @Service
+@Log4j
 public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	
 	private static final int ESTATUS_ACTIVO_CONDICION = 1;
@@ -21,7 +25,15 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 
 	@Override
 	public CondicionBusinessDto getInfoCondicionById(Long id) {
-		Condicion condicionEntity = condicionRepository.findById(id).get();
+		Condicion condicionEntity = null;
+		try {
+			condicionEntity = condicionRepository.findById(id).get();
+			
+		} catch (Exception e) {
+			log.error("Error al obtener condición");
+			throw new ResourceNotFoundException("No se encontro condición");
+		}
+		
 		return mapFromCondicionBusinessDtoToEntity(condicionEntity);
 	}
 
