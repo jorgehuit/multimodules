@@ -15,18 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
 import com.axa.mx.application.dto.CondicionApiDto;
 import com.axa.mx.application.dto.CondicionInsertApiDto;
 import com.axa.mx.application.dto.DataApi;
+import com.axa.mx.business.dto.CustomErrorResponseDTO;
 import com.axa.mx.dto.CondicionInsertServiceDto;
 import com.axa.mx.dto.CondicionServiceDto;
 import com.axa.mx.service.CondicionService;
 
-@CrossOrigin(origins = { "http://localhost:4200" })
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = { "http://localhost:4200" })
 public class CondicionController {
 	
 	@Autowired
 	private CondicionService condicionService;
 	
+	@ApiOperation(value = "Obtiene una condición por medio del ID")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "SUCCESS", response = CondicionApiDto.class),
+			@ApiResponse(code = 404, message = "Not found", response = CustomErrorResponseDTO.class)
+	})
 	@GetMapping(value = "/getCondicionById/{id}")
 	public ResponseEntity<CondicionApiDto> getCondicionById(@PathVariable("id") Long id){
 		CondicionServiceDto condicionServiceDto = condicionService.getCondicionById(id);
