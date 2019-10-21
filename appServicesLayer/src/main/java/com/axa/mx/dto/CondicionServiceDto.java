@@ -1,5 +1,7 @@
 package com.axa.mx.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +20,14 @@ public class CondicionServiceDto {
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
-	public static class InsertCondicionServiceOutDto extends CondicionServiceDto{
+	public static class CondicionServiceOutDto extends CondicionServiceDto{
 		private Long id;
+	}
+	
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class ListCondicionServiceOutDto {
+		private List<CondicionServiceOutDto> listCondicionServiceOutDto;
 	}
 }

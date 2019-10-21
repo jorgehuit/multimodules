@@ -2,10 +2,13 @@ package com.axa.mx.service;
 
 import com.axa.mx.dto.CondicionInsertServiceDto;
 import com.axa.mx.dto.CondicionServiceDto;
-import com.axa.mx.dto.CondicionServiceDto.InsertCondicionServiceOutDto;
+import com.axa.mx.dto.CondicionServiceDto.CondicionServiceOutDto;
+import com.axa.mx.dto.CondicionServiceDto.ListCondicionServiceOutDto;
 
 public interface CondicionService {
 	CondicionServiceDto getCondicionById(Long id);
 
-	InsertCondicionServiceOutDto insertCondicion(CondicionInsertServiceDto condicionInsertServiceDto);
+	CondicionServiceOutDto insertCondicion(CondicionInsertServiceDto condicionInsertServiceDto);
+	
+	ListCondicionServiceOutDto getAllCondiciones();
 }

@@ -12,6 +12,10 @@ public class BusinessTest {
 	@Test
 	public void generarIdCondicion() {
 		
+		String minus = "alertaghjkjk";
+		String substring = minus.substring(4,8).toUpperCase(); 
+		System.out.println("en mayusculas : : :" + substring);
+		
 		List<Condiciones> listCondiciones = new ArrayList<>();
 		listCondiciones.add(new Condiciones("nombre0", "app0", "COBE00010000"));
 		listCondiciones.add(new Condiciones("nombre2", "app2", "COBE00010200"));

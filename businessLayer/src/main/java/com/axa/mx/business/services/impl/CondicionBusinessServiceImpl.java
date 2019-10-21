@@ -1,5 +1,9 @@
 package com.axa.mx.business.services.impl;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -7,7 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.axa.mx.business.dto.CondicionBusinessDto;
-import com.axa.mx.business.dto.CondicionBusinessDto.InsertCondicionBusinessOutDto;
+import com.axa.mx.business.dto.CondicionBusinessDto.CondicionBusinessOutDto;
+import com.axa.mx.business.dto.CondicionBusinessDto.ListCondicionBusinessOutDto;
 import com.axa.mx.business.dto.CondicionInsertBusinessDto;
 import com.axa.mx.business.exception.ResourceNotFoundException;
 import com.axa.mx.business.services.CondicionBusinessService;
@@ -21,6 +26,7 @@ import lombok.extern.log4j.Log4j;
 public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	
 	private static final int ESTATUS_ACTIVO_CONDICION = 1;
+	
 	@Autowired
 	private CondicionRepository condicionRepository;
 
@@ -39,11 +45,11 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	}
 
 	@Override
-	public InsertCondicionBusinessOutDto insertCondicion(CondicionInsertBusinessDto condicionInsertBusinessDto) {
-		InsertCondicionBusinessOutDto insertCondicionBusinessOutDto = new InsertCondicionBusinessOutDto();
+	public CondicionBusinessOutDto insertCondicion(CondicionInsertBusinessDto condicionInsertBusinessDto) {
+		CondicionBusinessOutDto insertCondicionBusinessOutDto = new CondicionBusinessOutDto();
 		String tipo = condicionInsertBusinessDto.getTipo().substring(0, 4);
 		String idGenerado = "";
-		List<Condicion> listCondicion = condicionRepository.getCondicionByIdGenerado(tipo);
+		List<Condicion> listCondicion = condicionRepository.getCondicionByIdGenerado(tipo.toUpperCase());
 		if(!listCondicion.isEmpty()) {
 			listCondicion.sort(Comparator.comparing(Condicion::getIdGenerado));
 			idGenerado = generarIdConsecutivo(listCondicion.get(listCondicion.size() - 1));
@@ -69,6 +75,26 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		
 		return insertCondicionBusinessOutDto;
 	}
+	
+	@Override
+	public ListCondicionBusinessOutDto getAllCondiciones() {
+		ListCondicionBusinessOutDto listCondicionBusinessOutDto = new ListCondicionBusinessOutDto();
+
+		listCondicionBusinessOutDto.setListCondicionBusinessOutDto(
+				getCollectionFromIteralbe(condicionRepository.findAll())
+				.stream()
+				.map(this::mapCondicionBusinessToCondicionEntity)
+				.collect(toList()));
+
+		return listCondicionBusinessOutDto;
+	}
+	
+	public <T> Collection<T> getCollectionFromIteralbe(Iterable<T> itr) {
+		Collection<T> cltn = new ArrayList<T>();
+		itr.forEach(cltn::add); 
+		
+		return cltn;
+	}
 
 	private String generarIdConsecutivo(Condicion condicionEntityByIdGenerado) {
 		String idGenerado = condicionEntityByIdGenerado.getIdGenerado();
@@ -89,11 +115,24 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 
 	private String generaIdPrimeraVez(String tipo) {
 		StringBuilder builder = new StringBuilder();
-		builder.append(tipo);
+		builder.append(tipo.toUpperCase());
 		builder.append("0001");
 		builder.append("00");
 		builder.append("00");
 		return builder.toString();
+	}
+	
+	CondicionBusinessOutDto mapCondicionBusinessToCondicionEntity(Condicion condicion) {
+		CondicionBusinessOutDto condicionBusinessOutDto = new CondicionBusinessOutDto();
+		condicionBusinessOutDto.setDescripcion(condicion.getDescripcion());
+		condicionBusinessOutDto.setEstatus(condicion.getEstatus());
+		condicionBusinessOutDto.setId(condicion.getId());
+		condicionBusinessOutDto.setIdGenerado(condicion.getIdGenerado());
+		condicionBusinessOutDto.setTexto(condicion.getTexto());
+		condicionBusinessOutDto.setTipo(condicion.getTipo());
+		condicionBusinessOutDto.setTitulo(condicion.getTitulo());
+		
+		return condicionBusinessOutDto;
 	}
 	
 	CondicionBusinessDto mapFromCondicionBusinessDtoToEntity(Condicion condicion) {

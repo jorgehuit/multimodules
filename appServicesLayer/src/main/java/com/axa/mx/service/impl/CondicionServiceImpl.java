@@ -1,15 +1,18 @@
 package com.axa.mx.service.impl;
 
+import static java.util.stream.Collectors.toList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.axa.mx.business.dto.CondicionBusinessDto;
-import com.axa.mx.business.dto.CondicionBusinessDto.InsertCondicionBusinessOutDto;
+import com.axa.mx.business.dto.CondicionBusinessDto.CondicionBusinessOutDto;
 import com.axa.mx.business.dto.CondicionInsertBusinessDto;
 import com.axa.mx.business.services.CondicionBusinessService;
 import com.axa.mx.dto.CondicionInsertServiceDto;
 import com.axa.mx.dto.CondicionServiceDto;
-import com.axa.mx.dto.CondicionServiceDto.InsertCondicionServiceOutDto;
+import com.axa.mx.dto.CondicionServiceDto.CondicionServiceOutDto;
+import com.axa.mx.dto.CondicionServiceDto.ListCondicionServiceOutDto;
 import com.axa.mx.service.CondicionService;
 
 @Service
@@ -25,10 +28,10 @@ public class CondicionServiceImpl implements CondicionService {
 	}
 	
 	@Override
-	public InsertCondicionServiceOutDto insertCondicion(CondicionInsertServiceDto condicionInsertServiceDto) {
-		InsertCondicionServiceOutDto insertCondicionServiceOutDto = new InsertCondicionServiceOutDto();
+	public CondicionServiceOutDto insertCondicion(CondicionInsertServiceDto condicionInsertServiceDto) {
+		CondicionServiceOutDto insertCondicionServiceOutDto = new CondicionServiceOutDto();
 		CondicionInsertBusinessDto condicionInsertBusinessDto = mapFromInsertServiceToInsertBusiness(condicionInsertServiceDto);
-		InsertCondicionBusinessOutDto insertCondicionBusinessOutDto = 
+		CondicionBusinessOutDto insertCondicionBusinessOutDto = 
 				condicionBusinessService.insertCondicion(condicionInsertBusinessDto);
 		insertCondicionServiceOutDto.setDescripcion(insertCondicionBusinessOutDto.getDescripcion());
 		insertCondicionServiceOutDto.setEstatus(insertCondicionBusinessOutDto.getEstatus());
@@ -42,7 +45,22 @@ public class CondicionServiceImpl implements CondicionService {
 		return insertCondicionServiceOutDto;
 	}
 	
-	CondicionInsertBusinessDto mapFromInsertServiceToInsertBusiness(CondicionInsertServiceDto condicionInsertServiceDto){
+	@Override
+	public ListCondicionServiceOutDto getAllCondiciones() {
+		ListCondicionServiceOutDto listCondicionServiceOutDto = new ListCondicionServiceOutDto();
+		listCondicionServiceOutDto.setListCondicionServiceOutDto(
+				condicionBusinessService
+				.getAllCondiciones()
+				.getListCondicionBusinessOutDto()
+				.stream()
+				.map(this::mapFromBusinessToServiceId)
+				.collect(toList()));
+		
+		return listCondicionServiceOutDto;
+	}
+	
+	CondicionInsertBusinessDto mapFromInsertServiceToInsertBusiness(
+			CondicionInsertServiceDto condicionInsertServiceDto){
 		CondicionInsertBusinessDto condicionInsertBusinessDto = new CondicionInsertBusinessDto();
 		condicionInsertBusinessDto.setDescripcion(condicionInsertServiceDto.getDescripcion());
 		condicionInsertBusinessDto.setTexto(condicionInsertServiceDto.getTexto());
@@ -65,5 +83,17 @@ public class CondicionServiceImpl implements CondicionService {
 		return condicionServiceDto;
 	}
 
+	CondicionServiceOutDto mapFromBusinessToServiceId(CondicionBusinessOutDto condicionBusinessOutDto) {
+		CondicionServiceOutDto condicionServiceOutDto = new CondicionServiceOutDto();
+		condicionServiceOutDto.setDescripcion(condicionBusinessOutDto.getDescripcion());
+		condicionServiceOutDto.setTexto(condicionBusinessOutDto.getTexto());
+		condicionServiceOutDto.setTipo(condicionBusinessOutDto.getTipo());
+		condicionServiceOutDto.setTitulo(condicionBusinessOutDto.getTitulo());
+		condicionServiceOutDto.setIdGenerado(condicionBusinessOutDto.getIdGenerado());
+		condicionServiceOutDto.setEstatus(condicionBusinessOutDto.getEstatus());
+		condicionServiceOutDto.setId(condicionBusinessOutDto.getId());
+		
+		return condicionServiceOutDto;
+	}
 	
 }

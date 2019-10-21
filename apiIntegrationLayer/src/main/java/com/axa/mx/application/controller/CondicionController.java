@@ -1,5 +1,7 @@
 package com.axa.mx.application.controller;
 
+import static java.util.stream.Collectors.toList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.axa.mx.application.dto.CondicionApiDto;
-import com.axa.mx.application.dto.CondicionApiDto.InsertCondicionOutDto;
+import com.axa.mx.application.dto.CondicionApiDto.CondicionApiOutDto;
+import com.axa.mx.application.dto.CondicionApiDto.ListCondicionApiDto;
 import com.axa.mx.application.dto.CondicionInsertApiDto;
 import com.axa.mx.business.dto.CustomErrorResponseDTO;
 import com.axa.mx.dto.CondicionInsertServiceDto;
 import com.axa.mx.dto.CondicionServiceDto;
-import com.axa.mx.dto.CondicionServiceDto.InsertCondicionServiceOutDto;
+import com.axa.mx.dto.CondicionServiceDto.CondicionServiceOutDto;
+import com.axa.mx.dto.CondicionServiceDto.ListCondicionServiceOutDto;
 import com.axa.mx.service.CondicionService;
 
 import io.swagger.annotations.ApiOperation;
@@ -44,13 +48,27 @@ public class CondicionController {
 		
 		return new ResponseEntity<CondicionApiDto> (condicionApiDto, HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/getAllCondicion")
+	public ResponseEntity<ListCondicionApiDto> getAllCondicion() {
+		ListCondicionApiDto listCondicionApiDto = new ListCondicionApiDto();
+		listCondicionApiDto.setListCondicionApiDto(
+				condicionService
+				.getAllCondiciones()
+				.getListCondicionServiceOutDto()
+				.stream()
+				.map(this::createList)
+				.collect(toList()));
+
+		return new ResponseEntity<ListCondicionApiDto>(listCondicionApiDto, HttpStatus.OK);
+	}
 	
 	@PostMapping(value = "/insertCondicion")
-	public ResponseEntity<InsertCondicionOutDto> insertCondicion(
+	public ResponseEntity<CondicionApiOutDto> insertCondicion(
 			@RequestBody CondicionInsertApiDto condicionInsertApiDto){
-		InsertCondicionOutDto insertCondicionOutDto = new InsertCondicionOutDto();
+		CondicionApiOutDto insertCondicionOutDto = new CondicionApiOutDto();
 		
-		InsertCondicionServiceOutDto insertCondicion = 
+		CondicionServiceOutDto insertCondicion = 
 				condicionService.insertCondicion(mapFromInsertApiToInsertService(condicionInsertApiDto));
 		insertCondicionOutDto.setDescripcion(insertCondicion.getDescripcion());
 		insertCondicionOutDto.setEstatus(insertCondicion.getEstatus());
@@ -60,10 +78,10 @@ public class CondicionController {
 		insertCondicionOutDto.setTipo(insertCondicion.getTipo());
 		insertCondicionOutDto.setTitulo(insertCondicion.getTitulo());
 		
-		return new ResponseEntity<InsertCondicionOutDto>(insertCondicionOutDto, HttpStatus.OK);
+		return new ResponseEntity<CondicionApiOutDto>(insertCondicionOutDto, HttpStatus.OK);
 	}
 	
-	CondicionInsertServiceDto mapFromInsertApiToInsertService(CondicionInsertApiDto condicionInsertApiDto) {
+	private CondicionInsertServiceDto mapFromInsertApiToInsertService(CondicionInsertApiDto condicionInsertApiDto) {
 		CondicionInsertServiceDto condicionInsertServiceDto = new CondicionInsertServiceDto();
 		condicionInsertServiceDto.setDescripcion(condicionInsertApiDto.getDescripcion());
 		condicionInsertServiceDto.setTexto(condicionInsertApiDto.getTexto());
@@ -74,7 +92,7 @@ public class CondicionController {
 		
 	}
 	
-	CondicionApiDto mapFromServiceToAPi(CondicionServiceDto condicionServiceDto) {
+	private CondicionApiDto mapFromServiceToAPi(CondicionServiceDto condicionServiceDto) {
 		CondicionApiDto condicionApiDto = new CondicionApiDto();
 		
 		condicionApiDto.setDescripcion(condicionServiceDto.getDescripcion());
@@ -85,6 +103,19 @@ public class CondicionController {
 		condicionApiDto.setEstatus(condicionServiceDto.getEstatus());
 		
 		return condicionApiDto;
+	}
+	
+	private CondicionApiOutDto createList(CondicionServiceOutDto condicionServiceOutDto) {
+		CondicionApiOutDto  condicionOutDto = new CondicionApiOutDto();
+		condicionOutDto.setDescripcion(condicionServiceOutDto.getDescripcion());
+		condicionOutDto.setTexto(condicionServiceOutDto.getTexto());
+		condicionOutDto.setTipo(condicionServiceOutDto.getTipo());
+		condicionOutDto.setTitulo(condicionServiceOutDto.getTitulo());
+		condicionOutDto.setIdGenerado(condicionServiceOutDto.getIdGenerado());
+		condicionOutDto.setEstatus(condicionServiceOutDto.getEstatus());
+		condicionOutDto.setId(condicionServiceOutDto.getId());
+		
+		return condicionOutDto;
 	}
 
 }

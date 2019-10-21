@@ -1,5 +1,7 @@
 package com.axa.mx.business.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +20,14 @@ public class CondicionBusinessDto {
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor
-	public static class InsertCondicionBusinessOutDto extends CondicionBusinessDto{
+	public static class CondicionBusinessOutDto extends CondicionBusinessDto{
 		private Long id;
+	}
+	
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class ListCondicionBusinessOutDto{
+		List<CondicionBusinessOutDto> listCondicionBusinessOutDto;
 	}
 }
