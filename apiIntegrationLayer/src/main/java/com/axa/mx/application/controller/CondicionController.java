@@ -3,11 +3,13 @@ package com.axa.mx.application.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.axa.mx.application.dto.CondicionApiDto;
@@ -17,6 +19,7 @@ import com.axa.mx.dto.CondicionInsertServiceDto;
 import com.axa.mx.dto.CondicionServiceDto;
 import com.axa.mx.service.CondicionService;
 
+@CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api")
 public class CondicionController {
@@ -33,6 +36,7 @@ public class CondicionController {
 	}
 	
 	@PostMapping(value = "/insertCondicion")
+	@ResponseStatus(HttpStatus.CREATED)	
 	public ResponseEntity<DataApi> insertCondicion(@RequestBody CondicionInsertApiDto condicionInsertApiDto){
 		String message = condicionService.insertCondicion(
 				mapFromInsertApiToInsertService(condicionInsertApiDto)
