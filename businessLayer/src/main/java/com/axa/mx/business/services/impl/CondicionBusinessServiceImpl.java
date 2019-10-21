@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.axa.mx.business.client.ClientRemote;
 import com.axa.mx.business.dto.CondicionBusinessDto;
 import com.axa.mx.business.dto.CondicionBusinessDto.InsertCondicionBusinessOutDto;
 import com.axa.mx.business.dto.CondicionInsertBusinessDto;
@@ -24,9 +23,6 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	private static final int ESTATUS_ACTIVO_CONDICION = 1;
 	@Autowired
 	private CondicionRepository condicionRepository;
-	
-	@Autowired
-	private ClientRemote clienteRemoto;
 
 	@Override
 	public CondicionBusinessDto getInfoCondicionById(Long id) {
@@ -78,7 +74,7 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		String idGenerado = condicionEntityByIdGenerado.getIdGenerado();
 		StringBuilder builder = new StringBuilder();
 		if(idGenerado.length() == 12) {
-			String tipo = idGenerado.substring(0, 4);
+			String tipo = idGenerado.substring(0, 4).toUpperCase();
 			Integer nvoConsecutivo = Integer.parseInt(idGenerado.substring(4, 8));
 			Integer clon = Integer.parseInt(idGenerado.substring(8, 10));
 			Integer version = Integer.parseInt(idGenerado.substring(10, 12));
