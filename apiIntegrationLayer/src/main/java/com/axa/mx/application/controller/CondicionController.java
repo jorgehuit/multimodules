@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin
+@CrossOrigin(origins = { "http://localhost:4200" })
 public class CondicionController {
 	
 	@Autowired
@@ -46,7 +46,8 @@ public class CondicionController {
 	}
 	
 	@PostMapping(value = "/insertCondicion")
-	public ResponseEntity<InsertCondicionOutDto> insertCondicion(@RequestBody CondicionInsertApiDto condicionInsertApiDto){
+	public ResponseEntity<InsertCondicionOutDto> insertCondicion(
+			@RequestBody CondicionInsertApiDto condicionInsertApiDto){
 		InsertCondicionOutDto insertCondicionOutDto = new InsertCondicionOutDto();
 		
 		InsertCondicionServiceOutDto insertCondicion = 
