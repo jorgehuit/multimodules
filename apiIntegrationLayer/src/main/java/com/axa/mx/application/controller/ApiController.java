@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.axa.mx.application.dto.DataApi;
+import com.axa.mx.service.ServiceRemote;
 
 @RestController
 public class ApiController {
@@ -19,6 +20,9 @@ public class ApiController {
 
 	@Autowired
 	private MessageSource messageSource;
+	
+	@Autowired
+	private ServiceRemote serviceRemote;
 
 	// ------------ Devuelve versión deployada en servidor ------------ //
 
@@ -33,6 +37,13 @@ public class ApiController {
 		return new ResponseEntity<DataApi>(
 				new DataApi(messageSource.getMessage("welcome.user", new String[] {"Jorge"}, LocaleContextHolder.getLocale())),
 				HttpStatus.OK);
+	}
+
+	// ------------ Devuelve Hello world remoto con Retry ------------ //
+	@GetMapping(value = "getHelloRemoto")
+	public ResponseEntity<DataApi> getHelloRemoto() {
+		return new ResponseEntity<DataApi>(
+				new DataApi(serviceRemote.helloRemote()), HttpStatus.OK);
 	}
 
 }

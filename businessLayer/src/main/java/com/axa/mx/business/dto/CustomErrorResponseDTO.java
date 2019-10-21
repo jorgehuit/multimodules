@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class CustomErrorResponseDTO {
 	private Integer codeStatus;
     private String message;
+    private String fecha;
 }

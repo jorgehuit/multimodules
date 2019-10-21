@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.axa.mx.business.client.ClienteRemoto;
+import com.axa.mx.business.client.ClientRemote;
 import com.axa.mx.business.dto.CondicionBusinessDto;
 import com.axa.mx.business.dto.CondicionInsertBusinessDto;
 import com.axa.mx.business.exception.ResourceNotFoundException;
@@ -25,7 +25,7 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	private CondicionRepository condicionRepository;
 	
 	@Autowired
-	private ClienteRemoto clienteRemoto;
+	private ClientRemote clienteRemoto;
 
 	@Override
 	public CondicionBusinessDto getInfoCondicionById(Long id) {
