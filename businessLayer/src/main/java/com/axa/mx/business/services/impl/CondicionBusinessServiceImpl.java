@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.axa.mx.business.client.ClientRemote;
 import com.axa.mx.business.dto.CondicionBusinessDto;
+import com.axa.mx.business.dto.CondicionBusinessDto.InsertCondicionBusinessOutDto;
 import com.axa.mx.business.dto.CondicionInsertBusinessDto;
 import com.axa.mx.business.exception.ResourceNotFoundException;
 import com.axa.mx.business.services.CondicionBusinessService;
@@ -42,8 +43,8 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	}
 
 	@Override
-	public String insertCondicion(CondicionInsertBusinessDto condicionInsertBusinessDto) {
-		
+	public InsertCondicionBusinessOutDto insertCondicion(CondicionInsertBusinessDto condicionInsertBusinessDto) {
+		InsertCondicionBusinessOutDto insertCondicionBusinessOutDto = new InsertCondicionBusinessOutDto();
 		String tipo = condicionInsertBusinessDto.getTipo().substring(0, 4);
 		String idGenerado = "";
 		List<Condicion> listCondicion = condicionRepository.getCondicionByIdGenerado(tipo);
@@ -57,8 +58,20 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		}
 		
 		Condicion condicionEntity = condicionRepository.save(createInsertCondicion(condicionInsertBusinessDto, idGenerado));
+		if(condicionEntity != null) {
+			insertCondicionBusinessOutDto.setDescripcion(condicionEntity.getDescripcion());
+			insertCondicionBusinessOutDto.setEstatus(condicionEntity.getEstatus());
+			insertCondicionBusinessOutDto.setId(condicionEntity.getId());
+			insertCondicionBusinessOutDto.setIdGenerado(condicionEntity.getIdGenerado());
+			insertCondicionBusinessOutDto.setTexto(condicionEntity.getTexto());
+			insertCondicionBusinessOutDto.setTipo(condicionEntity.getTipo());
+			insertCondicionBusinessOutDto.setTitulo(condicionEntity.getTitulo());
+			
+		}else {
+			throw new ResourceNotFoundException("No se inserto condicion.");
+		}
 		
-		return condicionEntity != null ? "Id : " + condicionEntity.getId() + " Id Generado : " + condicionEntity.getIdGenerado() : null;
+		return insertCondicionBusinessOutDto;
 	}
 
 	private String generarIdConsecutivo(Condicion condicionEntityByIdGenerado) {

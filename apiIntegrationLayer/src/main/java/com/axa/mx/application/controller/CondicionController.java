@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.axa.mx.application.dto.CondicionApiDto;
+import com.axa.mx.application.dto.CondicionApiDto.InsertCondicionOutDto;
 import com.axa.mx.application.dto.CondicionInsertApiDto;
-import com.axa.mx.application.dto.DataApi;
 import com.axa.mx.business.dto.CustomErrorResponseDTO;
 import com.axa.mx.dto.CondicionInsertServiceDto;
 import com.axa.mx.dto.CondicionServiceDto;
+import com.axa.mx.dto.CondicionServiceDto.InsertCondicionServiceOutDto;
 import com.axa.mx.service.CondicionService;
 
 import io.swagger.annotations.ApiOperation;
@@ -45,12 +46,20 @@ public class CondicionController {
 	}
 	
 	@PostMapping(value = "/insertCondicion")
-	public ResponseEntity<DataApi> insertCondicion(@RequestBody CondicionInsertApiDto condicionInsertApiDto){
-		String message = condicionService.insertCondicion(
-				mapFromInsertApiToInsertService(condicionInsertApiDto)
-				);
+	public ResponseEntity<InsertCondicionOutDto> insertCondicion(@RequestBody CondicionInsertApiDto condicionInsertApiDto){
+		InsertCondicionOutDto insertCondicionOutDto = new InsertCondicionOutDto();
 		
-		return new ResponseEntity<DataApi>(new DataApi(message), HttpStatus.OK);
+		InsertCondicionServiceOutDto insertCondicion = 
+				condicionService.insertCondicion(mapFromInsertApiToInsertService(condicionInsertApiDto));
+		insertCondicionOutDto.setDescripcion(insertCondicion.getDescripcion());
+		insertCondicionOutDto.setEstatus(insertCondicion.getEstatus());
+		insertCondicionOutDto.setId(insertCondicion.getId());
+		insertCondicionOutDto.setIdGenerado(insertCondicion.getIdGenerado());
+		insertCondicionOutDto.setTexto(insertCondicion.getTexto());
+		insertCondicionOutDto.setTipo(insertCondicion.getTipo());
+		insertCondicionOutDto.setTitulo(insertCondicion.getTitulo());
+		
+		return new ResponseEntity<InsertCondicionOutDto>(insertCondicionOutDto, HttpStatus.OK);
 	}
 	
 	CondicionInsertServiceDto mapFromInsertApiToInsertService(CondicionInsertApiDto condicionInsertApiDto) {

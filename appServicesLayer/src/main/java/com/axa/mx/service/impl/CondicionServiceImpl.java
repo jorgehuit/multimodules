@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.axa.mx.business.dto.CondicionBusinessDto;
+import com.axa.mx.business.dto.CondicionBusinessDto.InsertCondicionBusinessOutDto;
 import com.axa.mx.business.dto.CondicionInsertBusinessDto;
 import com.axa.mx.business.services.CondicionBusinessService;
 import com.axa.mx.dto.CondicionInsertServiceDto;
 import com.axa.mx.dto.CondicionServiceDto;
+import com.axa.mx.dto.CondicionServiceDto.InsertCondicionServiceOutDto;
 import com.axa.mx.service.CondicionService;
 
 @Service
@@ -23,11 +25,21 @@ public class CondicionServiceImpl implements CondicionService {
 	}
 	
 	@Override
-	public String insertCondicion(CondicionInsertServiceDto condicionInsertServiceDto) {
-		
+	public InsertCondicionServiceOutDto insertCondicion(CondicionInsertServiceDto condicionInsertServiceDto) {
+		InsertCondicionServiceOutDto insertCondicionServiceOutDto = new InsertCondicionServiceOutDto();
 		CondicionInsertBusinessDto condicionInsertBusinessDto = mapFromInsertServiceToInsertBusiness(condicionInsertServiceDto);
+		InsertCondicionBusinessOutDto insertCondicionBusinessOutDto = 
+				condicionBusinessService.insertCondicion(condicionInsertBusinessDto);
+		insertCondicionServiceOutDto.setDescripcion(insertCondicionBusinessOutDto.getDescripcion());
+		insertCondicionServiceOutDto.setEstatus(insertCondicionBusinessOutDto.getEstatus());
+		insertCondicionServiceOutDto.setId(insertCondicionBusinessOutDto.getId());
+		insertCondicionServiceOutDto.setIdGenerado(insertCondicionBusinessOutDto.getIdGenerado());
+		insertCondicionServiceOutDto.setTexto(insertCondicionBusinessOutDto.getTexto());
+		insertCondicionServiceOutDto.setTipo(insertCondicionBusinessOutDto.getTipo());
+		insertCondicionServiceOutDto.setTitulo(insertCondicionBusinessOutDto.getTitulo());
 		
-		return condicionBusinessService.insertCondicion(condicionInsertBusinessDto);
+		
+		return insertCondicionServiceOutDto;
 	}
 	
 	CondicionInsertBusinessDto mapFromInsertServiceToInsertBusiness(CondicionInsertServiceDto condicionInsertServiceDto){

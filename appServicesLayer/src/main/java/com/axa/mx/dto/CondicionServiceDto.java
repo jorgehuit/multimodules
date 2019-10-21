@@ -14,4 +14,11 @@ public class CondicionServiceDto {
 	private String descripcion;
 	private String texto;
 	private Integer estatus;
+	
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class InsertCondicionServiceOutDto extends CondicionServiceDto{
+		private Long id;
+	}
 }

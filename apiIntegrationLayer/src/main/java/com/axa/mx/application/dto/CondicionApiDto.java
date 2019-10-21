@@ -14,4 +14,12 @@ public class CondicionApiDto {
 	private String descripcion;
 	private String texto;
 	private Integer estatus;
+	
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class InsertCondicionOutDto extends CondicionApiDto{
+		private Long id;
+		
+	}
 }

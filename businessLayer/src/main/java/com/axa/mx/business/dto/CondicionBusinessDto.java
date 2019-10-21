@@ -14,4 +14,11 @@ public class CondicionBusinessDto {
 	private String descripcion;
 	private String texto;
 	private Integer estatus;
+	
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class InsertCondicionBusinessOutDto extends CondicionBusinessDto{
+		private Long id;
+	}
 }
