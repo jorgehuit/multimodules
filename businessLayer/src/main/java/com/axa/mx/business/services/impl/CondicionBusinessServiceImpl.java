@@ -118,8 +118,8 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 			Integer version = Integer.parseInt(idGenerado.substring(10, 12));
 			builder.append(tipo); //Tipo condicion
 			builder.append(String.format("%04d", nvoConsecutivo + 1)); // Nva condicion consecutivo
-			builder.append(String.format("%02d",  clon +1 )); // Clon consecutivo
-			builder.append(String.format("%02d",  version +1 )); // Version consecutivo
+			builder.append(String.format("%02d",  clon  )); // Clon consecutivo
+			builder.append(String.format("%02d",  version )); // Version consecutivo
 			
 		}
 		return builder.toString();
