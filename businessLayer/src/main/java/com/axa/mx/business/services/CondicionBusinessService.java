@@ -12,5 +12,7 @@ public interface CondicionBusinessService {
 	CondicionBusinessOutDto insertCondicion(CondicionInsertBusinessDto condicionInsertBusinessDto);
 	
 	ListCondicionBusinessOutDto getAllCondiciones();
+	
+	CondicionBusinessDto bajaLogicaCondicion(Long id);
 
 }

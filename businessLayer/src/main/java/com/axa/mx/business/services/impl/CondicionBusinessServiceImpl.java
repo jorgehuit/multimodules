@@ -26,6 +26,7 @@ import lombok.extern.log4j.Log4j;
 public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	
 	private static final int ESTATUS_ACTIVO_CONDICION = 1;
+	private static final int ESTATUS_INACTIVO_CONDICION = 2;
 	
 	@Autowired
 	private CondicionRepository condicionRepository;
@@ -33,14 +34,12 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	@Override
 	public CondicionBusinessDto getInfoCondicionById(Long id) {
 		Condicion condicionEntity = null;
-		try {
-			condicionEntity = condicionRepository.findById(id).get();
-			
-		} catch (Exception e) {
+		condicionEntity = condicionRepository.getCondicionById(id);
+		if (condicionEntity == null) {
 			log.error("Error al obtener condición");
 			throw new ResourceNotFoundException("No se encontro condición");
 		}
-		
+
 		return mapFromCondicionBusinessDtoToEntity(condicionEntity);
 	}
 
@@ -81,12 +80,25 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		ListCondicionBusinessOutDto listCondicionBusinessOutDto = new ListCondicionBusinessOutDto();
 
 		listCondicionBusinessOutDto.setListCondicionBusinessOutDto(
-				getCollectionFromIteralbe(condicionRepository.findAll())
+				getCollectionFromIteralbe(condicionRepository.getCondiciones())
 				.stream()
 				.map(this::mapCondicionBusinessToCondicionEntity)
 				.collect(toList()));
 
 		return listCondicionBusinessOutDto;
+	}
+	
+	@Override
+	public CondicionBusinessDto bajaLogicaCondicion(Long id) {
+		Condicion condicionEntity = condicionRepository.getCondicionById(id);
+		if(condicionEntity == null) {
+			log.error("No se encontro condición para dar de baja. ");
+			throw new ResourceNotFoundException("No se encontro condición para dar de baja");
+		}
+		condicionEntity.setEstatus(ESTATUS_INACTIVO_CONDICION);
+		Condicion condicionBaja = condicionRepository.save(condicionEntity);
+			
+		return mapFromCondicionBusinessDtoToEntity(condicionBaja);
 	}
 	
 	public <T> Collection<T> getCollectionFromIteralbe(Iterable<T> itr) {
@@ -157,5 +169,6 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		condicion.setTitulo(condicionInsertBusinessDto.getTitulo());
 		return condicion;
 	}
+
 
 }

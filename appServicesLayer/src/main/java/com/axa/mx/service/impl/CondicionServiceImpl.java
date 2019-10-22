@@ -59,6 +59,13 @@ public class CondicionServiceImpl implements CondicionService {
 		return listCondicionServiceOutDto;
 	}
 	
+	@Override
+	public CondicionServiceDto bajaLogicaCondicion(Long id) {
+		CondicionBusinessDto condicionBusinessDto = condicionBusinessService.bajaLogicaCondicion(id);
+		return mapFromBusinessToService(condicionBusinessDto);
+		
+	}
+	
 	CondicionInsertBusinessDto mapFromInsertServiceToInsertBusiness(
 			CondicionInsertServiceDto condicionInsertServiceDto){
 		CondicionInsertBusinessDto condicionInsertBusinessDto = new CondicionInsertBusinessDto();
@@ -95,5 +102,5 @@ public class CondicionServiceImpl implements CondicionService {
 		
 		return condicionServiceOutDto;
 	}
-	
+
 }

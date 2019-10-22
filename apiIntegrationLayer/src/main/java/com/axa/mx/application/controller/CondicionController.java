@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,8 +43,7 @@ public class CondicionController {
 	@ApiOperation(value = "Obtiene una condición por medio del ID")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "SUCCESS", response = CondicionApiDto.class),
-			@ApiResponse(code = 404, message = "Not found", response = CustomErrorResponseDTO.class)
-	})
+			@ApiResponse(code = 404, message = "Not found", response = CustomErrorResponseDTO.class)})
 	@GetMapping(value = "/getCondicionById/{id}")
 	public ResponseEntity<CondicionApiDto> getCondicionById(@PathVariable("id") Long id){
 		CondicionServiceDto condicionServiceDto = condicionService.getCondicionById(id);
@@ -90,7 +90,7 @@ public class CondicionController {
 		return new ResponseEntity<List<CondicionesApiBaseDto>>(listCondicionesApiBaseDto, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/insertCondicion")
+	@PutMapping(value = "/insertCondicion")
 	public ResponseEntity<CondicionApiOutDto> insertCondicion(
 			@RequestBody CondicionInsertApiDto condicionInsertApiDto){
 		CondicionApiOutDto insertCondicionOutDto = new CondicionApiOutDto();
@@ -106,6 +106,14 @@ public class CondicionController {
 		insertCondicionOutDto.setTitulo(insertCondicion.getTitulo());
 		
 		return new ResponseEntity<CondicionApiOutDto>(insertCondicionOutDto, HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping(value = "/bajaCondicion/{id}")
+	public ResponseEntity<CondicionApiDto> bajaCondicion(@PathVariable("id") Long id){
+		CondicionServiceDto condicionServiceDto = condicionService.bajaLogicaCondicion(id);
+		CondicionApiDto condicionApiDto = mapFromServiceToAPi(condicionServiceDto);
+		
+		return new ResponseEntity<CondicionApiDto> (condicionApiDto, HttpStatus.OK);
 	}
 	
 	private CondicionInsertServiceDto mapFromInsertApiToInsertService(CondicionInsertApiDto condicionInsertApiDto) {

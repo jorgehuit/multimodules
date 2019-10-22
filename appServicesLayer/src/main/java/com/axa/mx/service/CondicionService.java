@@ -11,4 +11,6 @@ public interface CondicionService {
 	CondicionServiceOutDto insertCondicion(CondicionInsertServiceDto condicionInsertServiceDto);
 	
 	ListCondicionServiceOutDto getAllCondiciones();
+	
+	CondicionServiceDto bajaLogicaCondicion(Long id);
 }
