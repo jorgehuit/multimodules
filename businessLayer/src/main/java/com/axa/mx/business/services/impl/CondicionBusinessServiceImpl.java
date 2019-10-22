@@ -46,9 +46,9 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	@Override
 	public CondicionBusinessOutDto insertCondicion(CondicionInsertBusinessDto condicionInsertBusinessDto) {
 		CondicionBusinessOutDto insertCondicionBusinessOutDto = new CondicionBusinessOutDto();
-		String tipo = condicionInsertBusinessDto.getTipo().substring(0, 4);
+		String tipo = condicionInsertBusinessDto.getTipo().substring(0, 4).toUpperCase();
 		String idGenerado = "";
-		List<Condicion> listCondicion = condicionRepository.getCondicionByIdGenerado(tipo.toUpperCase());
+		List<Condicion> listCondicion = condicionRepository.getCondicionByIdGenerado(tipo);
 		if(!listCondicion.isEmpty()) {
 			listCondicion.sort(Comparator.comparing(Condicion::getIdGenerado));
 			idGenerado = generarIdConsecutivo(listCondicion.get(listCondicion.size() - 1));
@@ -112,14 +112,12 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		String idGenerado = condicionEntityByIdGenerado.getIdGenerado();
 		StringBuilder builder = new StringBuilder();
 		if(idGenerado.length() == 12) {
-			String tipo = idGenerado.substring(0, 4).toUpperCase();
+			String tipo = idGenerado.substring(0, 4);
 			Integer nvoConsecutivo = Integer.parseInt(idGenerado.substring(4, 8));
-			Integer clon = Integer.parseInt(idGenerado.substring(8, 10));
-			Integer version = Integer.parseInt(idGenerado.substring(10, 12));
-			builder.append(tipo); //Tipo condicion
+			builder.append(tipo); 
 			builder.append(String.format("%04d", nvoConsecutivo + 1)); // Nva condicion consecutivo
-			builder.append(String.format("%02d",  clon  )); // Clon consecutivo
-			builder.append(String.format("%02d",  version )); // Version consecutivo
+			builder.append("00"); 
+			builder.append("00"); 
 			
 		}
 		return builder.toString();
@@ -127,7 +125,7 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 
 	private String generaIdPrimeraVez(String tipo) {
 		StringBuilder builder = new StringBuilder();
-		builder.append(tipo.toUpperCase());
+		builder.append(tipo);
 		builder.append("0001");
 		builder.append("00");
 		builder.append("00");
@@ -159,7 +157,9 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		return condicionBusinessDto;
 	}
 
-	private Condicion createInsertCondicion(CondicionInsertBusinessDto condicionInsertBusinessDto, String idGenerado) {
+	private Condicion createInsertCondicion(
+			CondicionInsertBusinessDto condicionInsertBusinessDto, 
+			String idGenerado) {
 		Condicion condicion = new Condicion();
 		condicion.setDescripcion(condicionInsertBusinessDto.getDescripcion());
 		condicion.setEstatus(ESTATUS_ACTIVO_CONDICION);
