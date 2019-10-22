@@ -2,6 +2,9 @@ package com.axa.mx.application.controller;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +20,11 @@ import com.axa.mx.application.dto.CondicionApiDto;
 import com.axa.mx.application.dto.CondicionApiDto.CondicionApiOutDto;
 import com.axa.mx.application.dto.CondicionApiDto.ListCondicionApiDto;
 import com.axa.mx.application.dto.CondicionInsertApiDto;
+import com.axa.mx.application.dto.CondicionesApiBaseDto;
 import com.axa.mx.business.dto.CustomErrorResponseDTO;
 import com.axa.mx.dto.CondicionInsertServiceDto;
 import com.axa.mx.dto.CondicionServiceDto;
 import com.axa.mx.dto.CondicionServiceDto.CondicionServiceOutDto;
-import com.axa.mx.dto.CondicionServiceDto.ListCondicionServiceOutDto;
 import com.axa.mx.service.CondicionService;
 
 import io.swagger.annotations.ApiOperation;
@@ -62,6 +65,30 @@ public class CondicionController {
 
 		return new ResponseEntity<ListCondicionApiDto>(listCondicionApiDto, HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/getCondiciones")
+	public ResponseEntity<List<CondicionesApiBaseDto>> getCondiciones() {
+		List<CondicionesApiBaseDto> listCondicionesApiBaseDto = new ArrayList<>();
+		
+		List<CondicionServiceOutDto> listCondicionServiceOutDto = 
+				condicionService.getAllCondiciones().getListCondicionServiceOutDto();
+		
+		for (CondicionServiceOutDto condicionServiceOutDto : listCondicionServiceOutDto) {
+			CondicionesApiBaseDto condicionesApiBaseDto = new CondicionesApiBaseDto();
+			condicionesApiBaseDto.setDescripcion(condicionServiceOutDto.getDescripcion());
+			condicionesApiBaseDto.setTexto(condicionServiceOutDto.getTexto());
+			condicionesApiBaseDto.setTipo(condicionServiceOutDto.getTipo());
+			condicionesApiBaseDto.setTitulo(condicionServiceOutDto.getTitulo());
+			condicionesApiBaseDto.setIdGenerado(condicionServiceOutDto.getIdGenerado());
+			condicionesApiBaseDto.setEstatus(condicionServiceOutDto.getEstatus());
+			condicionesApiBaseDto.setId(condicionServiceOutDto.getId());
+
+			listCondicionesApiBaseDto.add(condicionesApiBaseDto);
+		}
+
+				
+		return new ResponseEntity<List<CondicionesApiBaseDto>>(listCondicionesApiBaseDto, HttpStatus.OK);
+	}
 	
 	@PostMapping(value = "/insertCondicion")
 	public ResponseEntity<CondicionApiOutDto> insertCondicion(
@@ -78,7 +105,7 @@ public class CondicionController {
 		insertCondicionOutDto.setTipo(insertCondicion.getTipo());
 		insertCondicionOutDto.setTitulo(insertCondicion.getTitulo());
 		
-		return new ResponseEntity<CondicionApiOutDto>(insertCondicionOutDto, HttpStatus.OK);
+		return new ResponseEntity<CondicionApiOutDto>(insertCondicionOutDto, HttpStatus.CREATED);
 	}
 	
 	private CondicionInsertServiceDto mapFromInsertApiToInsertService(CondicionInsertApiDto condicionInsertApiDto) {
