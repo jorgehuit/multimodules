@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.retry.annotation.EnableRetry;
 
-import com.axa.mx.business.retry.RemoteRetry;
 import com.axa.mx.business.retry.impl.RemoteRetryImpl;
 
 @SpringBootApplication(scanBasePackages = "com.axa.mx")

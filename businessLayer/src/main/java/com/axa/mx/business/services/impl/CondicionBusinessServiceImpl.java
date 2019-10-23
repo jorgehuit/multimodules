@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	
+	private final DozerBeanMapper mapper = new DozerBeanMapper();
 	private static final int ESTATUS_ACTIVO_CONDICION = 1;
 	private static final int ESTATUS_INACTIVO_CONDICION = 2;
 	
@@ -39,13 +41,14 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 			log.error("Error al obtener condición");
 			throw new ResourceNotFoundException("No se encontro condición");
 		}
-
-		return mapFromCondicionBusinessDtoToEntity(condicionEntity);
+		CondicionBusinessDto condicionBusinessDto = mapper.map(condicionEntity, CondicionBusinessDto.class);
+		
+		return condicionBusinessDto;
 	}
 
 	@Override
 	public CondicionBusinessOutDto insertCondicion(CondicionInsertBusinessDto condicionInsertBusinessDto) {
-		CondicionBusinessOutDto insertCondicionBusinessOutDto = new CondicionBusinessOutDto();
+		CondicionBusinessOutDto condicionBusinessOutDto = new CondicionBusinessOutDto();
 		String tipo = condicionInsertBusinessDto.getTipo().substring(0, 4).toUpperCase();
 		String idGenerado = "";
 		List<Condicion> listCondicion = condicionRepository.getCondicionByIdGenerado(tipo);
@@ -60,19 +63,13 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		
 		Condicion condicionEntity = condicionRepository.save(createInsertCondicion(condicionInsertBusinessDto, idGenerado));
 		if(condicionEntity != null) {
-			insertCondicionBusinessOutDto.setDescripcion(condicionEntity.getDescripcion());
-			insertCondicionBusinessOutDto.setEstatus(condicionEntity.getEstatus());
-			insertCondicionBusinessOutDto.setId(condicionEntity.getId());
-			insertCondicionBusinessOutDto.setIdGenerado(condicionEntity.getIdGenerado());
-			insertCondicionBusinessOutDto.setTexto(condicionEntity.getTexto());
-			insertCondicionBusinessOutDto.setTipo(condicionEntity.getTipo());
-			insertCondicionBusinessOutDto.setTitulo(condicionEntity.getTitulo());
+			condicionBusinessOutDto = mapper.map(condicionEntity, CondicionBusinessOutDto.class);
 			
 		}else {
 			throw new ResourceNotFoundException("No se inserto condicion.");
 		}
 		
-		return insertCondicionBusinessOutDto;
+		return condicionBusinessOutDto;
 	}
 	
 	@Override
@@ -98,7 +95,8 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		condicionEntity.setEstatus(ESTATUS_INACTIVO_CONDICION);
 		Condicion condicionBaja = condicionRepository.save(condicionEntity);
 			
-		return mapFromCondicionBusinessDtoToEntity(condicionBaja);
+		CondicionBusinessDto condicionBusinessDto = mapper.map(condicionBaja, CondicionBusinessDto.class);
+		return condicionBusinessDto;
 	}
 	
 	public <T> Collection<T> getCollectionFromIteralbe(Iterable<T> itr) {
@@ -133,28 +131,9 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	}
 	
 	CondicionBusinessOutDto mapCondicionBusinessToCondicionEntity(Condicion condicion) {
-		CondicionBusinessOutDto condicionBusinessOutDto = new CondicionBusinessOutDto();
-		condicionBusinessOutDto.setDescripcion(condicion.getDescripcion());
-		condicionBusinessOutDto.setEstatus(condicion.getEstatus());
-		condicionBusinessOutDto.setId(condicion.getId());
-		condicionBusinessOutDto.setIdGenerado(condicion.getIdGenerado());
-		condicionBusinessOutDto.setTexto(condicion.getTexto());
-		condicionBusinessOutDto.setTipo(condicion.getTipo());
-		condicionBusinessOutDto.setTitulo(condicion.getTitulo());
+		CondicionBusinessOutDto condicionBusinessOutDto = mapper.map(condicion, CondicionBusinessOutDto.class);
 		
 		return condicionBusinessOutDto;
-	}
-	
-	CondicionBusinessDto mapFromCondicionBusinessDtoToEntity(Condicion condicion) {
-		CondicionBusinessDto condicionBusinessDto = new CondicionBusinessDto();
-		condicionBusinessDto.setDescripcion(condicion.getDescripcion());
-		condicionBusinessDto.setTexto(condicion.getTexto());
-		condicionBusinessDto.setTipo(condicion.getTipo());
-		condicionBusinessDto.setTitulo(condicion.getTitulo());
-		condicionBusinessDto.setIdGenerado(condicion.getIdGenerado());
-		condicionBusinessDto.setEstatus(condicion.getEstatus());
-		
-		return condicionBusinessDto;
 	}
 
 	private Condicion createInsertCondicion(
@@ -169,6 +148,5 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		condicion.setTitulo(condicionInsertBusinessDto.getTitulo());
 		return condicion;
 	}
-
 
 }

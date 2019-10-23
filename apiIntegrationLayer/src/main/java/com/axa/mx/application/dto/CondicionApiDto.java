@@ -1,10 +1,10 @@
 package com.axa.mx.application.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @AllArgsConstructor
@@ -17,19 +17,12 @@ public class CondicionApiDto {
 	private String texto;
 	private Integer estatus;
 	
-	@Data
+	@Setter
+	@Getter
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class CondicionApiOutDto extends CondicionApiDto{
 		private Long id;
-		
-	}
-	
-	@Data
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class ListCondicionApiDto{
-		private List<CondicionApiOutDto> listCondicionApiDto;
 		
 	}
 }
