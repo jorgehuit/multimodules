@@ -6,6 +6,7 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.axa.mx.business.dto.CondicionBusinessDto;
 import com.axa.mx.business.dto.CondicionBusinessDto.CondicionBusinessOutDto;
 import com.axa.mx.business.dto.CondicionInsertBusinessDto;
 import com.axa.mx.business.services.CondicionBusinessService;
@@ -57,10 +58,18 @@ public class CondicionServiceImpl implements CondicionService {
 		
 	}
 
+	@Override
+	public CondicionServiceDto editarCondicion(Long id, CondicionInsertServiceDto condicionInsertServiceDto) {
+		CondicionBusinessDto condicionBusinessDto = 
+				condicionBusinessService.editarCondicion(id, mapper.map(condicionInsertServiceDto, CondicionInsertBusinessDto.class));
+		return mapper.map(condicionBusinessDto, CondicionServiceDto.class);
+	}
+
 	CondicionServiceOutDto mapFromBusinessToService(CondicionBusinessOutDto condicionBusinessOutDto) {
 		CondicionServiceOutDto condicionServiceOutDto = mapper.map(condicionBusinessOutDto, CondicionServiceOutDto.class);
 		
 		return condicionServiceOutDto;
 	}
+
 
 }

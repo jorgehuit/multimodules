@@ -99,6 +99,36 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		return condicionBusinessDto;
 	}
 	
+	@Override
+	public CondicionBusinessDto editarCondicion(
+			Long id, 
+			CondicionInsertBusinessDto condicionInsertBusinessDto) {
+		Condicion condicionEntity = condicionRepository.getCondicionById(id);
+		if(condicionEntity == null) {
+			log.error("No se encontro condición para editar. ");
+			throw new ResourceNotFoundException("No se encontro condición para editar. ");
+		}
+		
+		condicionEntity.setDescripcion(condicionInsertBusinessDto.getDescripcion());
+		condicionEntity.setTexto(condicionInsertBusinessDto.getTexto());
+		condicionEntity.setTipo(condicionInsertBusinessDto.getTipo());
+		condicionEntity.setTitulo(condicionInsertBusinessDto.getTitulo());
+		condicionEntity.setIdGenerado(generarIdEditado(condicionEntity.getIdGenerado()));
+		
+		Condicion condicionMod = condicionRepository.save(condicionEntity);
+		
+		CondicionBusinessDto condicionBusinessDto = mapper.map(condicionMod, CondicionBusinessDto.class);
+		return condicionBusinessDto;
+	}
+
+	
+	private String generarIdEditado(String idGenerado) {
+		String idBase = idGenerado.substring(0, idGenerado.length() - 2);
+		Integer version = Integer.parseInt(idGenerado.substring(idGenerado.length() - 2));
+		
+		return idBase + String.format("%02d", version + 1);
+	}
+
 	public <T> Collection<T> getCollectionFromIteralbe(Iterable<T> itr) {
 		Collection<T> cltn = new ArrayList<T>();
 		itr.forEach(cltn::add); 

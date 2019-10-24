@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import com.axa.mx.application.dto.CondicionInsertApiDto;
 import com.axa.mx.application.dto.CondicionesApiBaseDto;
 import com.axa.mx.business.dto.CustomErrorResponseDTO;
 import com.axa.mx.dto.CondicionInsertServiceDto;
+import com.axa.mx.dto.CondicionServiceDto;
 import com.axa.mx.dto.CondicionServiceDto.CondicionServiceOutDto;
 import com.axa.mx.service.CondicionService;
 
@@ -80,6 +82,16 @@ public class CondicionController {
 		CondicionApiDto condicionApiDto = mapper.map(condicionService.bajaLogicaCondicion(id), CondicionApiDto.class);
 		
 		return new ResponseEntity<CondicionApiDto> (condicionApiDto, HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/editarCondicion/{id}")
+	public ResponseEntity<CondicionApiDto> editarCondicion(
+			@PathVariable("id") Long id,
+			@RequestBody CondicionInsertApiDto condicionInsertApiDto){
+		CondicionServiceDto condicionServiceDto = 
+				condicionService.editarCondicion(id, mapper.map(condicionInsertApiDto, CondicionInsertServiceDto.class));
+		
+		return new ResponseEntity<CondicionApiDto> (mapper.map(condicionServiceDto, CondicionApiDto.class), HttpStatus.OK);
 	}
 	
 	private CondicionesApiBaseDto mapFromServiceToApi(CondicionServiceOutDto condicionServiceOutDto) {

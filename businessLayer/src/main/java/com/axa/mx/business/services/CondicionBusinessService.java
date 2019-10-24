@@ -15,4 +15,6 @@ public interface CondicionBusinessService {
 	
 	CondicionBusinessDto bajaLogicaCondicion(Long id);
 
+	CondicionBusinessDto editarCondicion(Long id, CondicionInsertBusinessDto condicionInsertBusinessDto);
+
 }
