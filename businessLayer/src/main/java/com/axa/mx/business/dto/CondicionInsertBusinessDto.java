@@ -13,4 +13,5 @@ public class CondicionInsertBusinessDto {
 	private String titulo;
 	private String descripcion;
 	private String texto;
+	private String idProvisional;
 }

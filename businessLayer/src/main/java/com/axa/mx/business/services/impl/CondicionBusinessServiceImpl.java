@@ -55,20 +55,8 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 
 	@Override
 	public CondicionBusinessOutDto insertCondicion(CondicionInsertBusinessDto condicionInsertBusinessDto) {
-		CondicionBusinessOutDto condicionBusinessOutDto = new CondicionBusinessOutDto();
-		String tipo = condicionInsertBusinessDto.getTipo().substring(0, 4).toUpperCase();
-		String idGenerado = "";
-		List<Condicion> listCondicion = condicionRepository.getCondicionByIdGenerado(tipo);
-		if(!listCondicion.isEmpty()) {
-			listCondicion.sort(Comparator.comparing(Condicion::getIdGenerado));
-			idGenerado = generarIdConsecutivo(listCondicion.get(listCondicion.size() - 1));
-			
-		}else {
-			idGenerado = generaIdPrimeraVez(tipo);
-			
-		}
-		
-		Condicion condicionEntity = condicionRepository.save(createInsertCondicion(condicionInsertBusinessDto, idGenerado));
+		CondicionBusinessOutDto condicionBusinessOutDto = new CondicionBusinessOutDto();		
+		Condicion condicionEntity = condicionRepository.save(createInsertCondicion(condicionInsertBusinessDto));
 		if(condicionEntity != null) {
 			condicionBusinessOutDto = mapper.map(condicionEntity, CondicionBusinessOutDto.class);
 			
@@ -211,30 +199,6 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		
 		return cltn;
 	}
-
-	private String generarIdConsecutivo(Condicion condicionEntityByIdGenerado) {
-		String idGenerado = condicionEntityByIdGenerado.getIdGenerado();
-		StringBuilder builder = new StringBuilder();
-		if(idGenerado.length() == 12) {
-			String tipo = idGenerado.substring(0, 4);
-			Integer nvoConsecutivo = Integer.parseInt(idGenerado.substring(4, 8));
-			builder.append(tipo); 
-			builder.append(String.format("%04d", nvoConsecutivo + 1)); // Nva condicion consecutivo
-			builder.append("00"); 
-			builder.append("00"); 
-			
-		}
-		return builder.toString();
-	}
-
-	private String generaIdPrimeraVez(String tipo) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(tipo);
-		builder.append("0001");
-		builder.append("00");
-		builder.append("00");
-		return builder.toString();
-	}
 	
 	CondicionBusinessOutDto mapCondicionBusinessToCondicionEntity(Condicion condicion) {
 		CondicionBusinessOutDto condicionBusinessOutDto = mapper.map(condicion, CondicionBusinessOutDto.class);
@@ -243,12 +207,11 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 	}
 
 	private Condicion createInsertCondicion(
-			CondicionInsertBusinessDto condicionInsertBusinessDto, 
-			String idGenerado) {
+			CondicionInsertBusinessDto condicionInsertBusinessDto) {
 		Condicion condicion = new Condicion();
 		condicion.setDescripcion(condicionInsertBusinessDto.getDescripcion());
 		condicion.setEstatus(ESTATUS_ACTIVO_CONDICION);
-		condicion.setIdGenerado(idGenerado);
+		condicion.setIdGenerado(condicionInsertBusinessDto.getIdProvisional());
 		condicion.setTexto(condicionInsertBusinessDto.getTexto());
 		condicion.setTipo(condicionInsertBusinessDto.getTipo());
 		condicion.setTitulo(condicionInsertBusinessDto.getTitulo());
