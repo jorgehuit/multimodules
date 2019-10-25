@@ -211,7 +211,7 @@ public class CondicionBusinessServiceImpl implements CondicionBusinessService {
 		Condicion condicion = new Condicion();
 		condicion.setDescripcion(condicionInsertBusinessDto.getDescripcion());
 		condicion.setEstatus(ESTATUS_ACTIVO_CONDICION);
-		condicion.setIdGenerado(condicionInsertBusinessDto.getIdProvisional());
+		condicion.setIdGenerado(condicionInsertBusinessDto.getIdGenerado());
 		condicion.setTexto(condicionInsertBusinessDto.getTexto());
 		condicion.setTipo(condicionInsertBusinessDto.getTipo());
 		condicion.setTitulo(condicionInsertBusinessDto.getTitulo());
