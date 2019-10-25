@@ -33,4 +33,12 @@ public class CondicionBusinessDto {
 	public static class ListCondicionBusinessOutDto{
 		List<CondicionBusinessOutDto> listCondicionBusinessOutDto;
 	}
+	
+	@Setter
+	@Getter
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class ProvisionalIdBusinessDto{
+		private String descripcion;
+	}
 }

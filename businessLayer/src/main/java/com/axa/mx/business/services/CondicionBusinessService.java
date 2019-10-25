@@ -2,6 +2,7 @@ package com.axa.mx.business.services;
 
 import com.axa.mx.business.dto.CondicionBusinessDto;
 import com.axa.mx.business.dto.CondicionBusinessDto.CondicionBusinessOutDto;
+import com.axa.mx.business.dto.CondicionBusinessDto.ProvisionalIdBusinessDto;
 import com.axa.mx.business.dto.CondicionBusinessDto.ListCondicionBusinessOutDto;
 import com.axa.mx.business.dto.CondicionInsertBusinessDto;
 
@@ -16,5 +17,7 @@ public interface CondicionBusinessService {
 	CondicionBusinessDto bajaLogicaCondicion(Long id);
 
 	CondicionBusinessDto editarCondicion(Long id, CondicionInsertBusinessDto condicionInsertBusinessDto);
+	
+	String generarIdProvicional(ProvisionalIdBusinessDto idProvisionalBusinessDto);
 
 }

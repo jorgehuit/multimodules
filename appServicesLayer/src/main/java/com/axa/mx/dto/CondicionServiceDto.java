@@ -33,4 +33,12 @@ public class CondicionServiceDto {
 	public static class ListCondicionServiceOutDto {
 		private List<CondicionServiceOutDto> listCondicionServiceOutDto;
 	}
+	
+	@Setter
+	@Getter
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class ProvisionalIdServiceDto{
+		private String descripcion;
+	}
 }

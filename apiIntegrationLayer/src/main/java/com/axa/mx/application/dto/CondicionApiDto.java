@@ -25,4 +25,5 @@ public class CondicionApiDto {
 		private Long id;
 		
 	}
+	
 }

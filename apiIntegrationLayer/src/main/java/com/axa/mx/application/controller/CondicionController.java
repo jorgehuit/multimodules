@@ -23,10 +23,12 @@ import com.axa.mx.application.dto.CondicionApiDto;
 import com.axa.mx.application.dto.CondicionApiDto.CondicionApiOutDto;
 import com.axa.mx.application.dto.CondicionInsertApiDto;
 import com.axa.mx.application.dto.CondicionesApiBaseDto;
+import com.axa.mx.application.dto.DataApi;
 import com.axa.mx.business.dto.CustomErrorResponseDTO;
 import com.axa.mx.dto.CondicionInsertServiceDto;
 import com.axa.mx.dto.CondicionServiceDto;
 import com.axa.mx.dto.CondicionServiceDto.CondicionServiceOutDto;
+import com.axa.mx.dto.CondicionServiceDto.ProvisionalIdServiceDto;
 import com.axa.mx.service.CondicionService;
 
 import io.swagger.annotations.ApiOperation;
@@ -92,6 +94,15 @@ public class CondicionController {
 				condicionService.editarCondicion(id, mapper.map(condicionInsertApiDto, CondicionInsertServiceDto.class));
 		
 		return new ResponseEntity<CondicionApiDto> (mapper.map(condicionServiceDto, CondicionApiDto.class), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/idProvisional/{desc}")
+	public ResponseEntity<DataApi> idProvisional(
+			@PathVariable("desc") String desc){
+		String idProvicional = 
+				condicionService.generarIdProvicional(new ProvisionalIdServiceDto(desc));
+		
+		return new ResponseEntity<DataApi>(new DataApi(idProvicional), HttpStatus.CREATED);
 	}
 	
 	private CondicionesApiBaseDto mapFromServiceToApi(CondicionServiceOutDto condicionServiceOutDto) {

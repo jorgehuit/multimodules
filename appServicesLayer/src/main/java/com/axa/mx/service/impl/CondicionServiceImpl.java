@@ -8,12 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.axa.mx.business.dto.CondicionBusinessDto;
 import com.axa.mx.business.dto.CondicionBusinessDto.CondicionBusinessOutDto;
+import com.axa.mx.business.dto.CondicionBusinessDto.ProvisionalIdBusinessDto;
 import com.axa.mx.business.dto.CondicionInsertBusinessDto;
 import com.axa.mx.business.services.CondicionBusinessService;
 import com.axa.mx.dto.CondicionInsertServiceDto;
 import com.axa.mx.dto.CondicionServiceDto;
 import com.axa.mx.dto.CondicionServiceDto.CondicionServiceOutDto;
 import com.axa.mx.dto.CondicionServiceDto.ListCondicionServiceOutDto;
+import com.axa.mx.dto.CondicionServiceDto.ProvisionalIdServiceDto;
 import com.axa.mx.service.CondicionService;
 
 @Service
@@ -64,12 +66,17 @@ public class CondicionServiceImpl implements CondicionService {
 				condicionBusinessService.editarCondicion(id, mapper.map(condicionInsertServiceDto, CondicionInsertBusinessDto.class));
 		return mapper.map(condicionBusinessDto, CondicionServiceDto.class);
 	}
+	
+	@Override
+	public String generarIdProvicional(ProvisionalIdServiceDto provisionalIdServiceDto) {
+		
+		return condicionBusinessService.generarIdProvicional(mapper.map(provisionalIdServiceDto, ProvisionalIdBusinessDto.class));
+	}
 
 	CondicionServiceOutDto mapFromBusinessToService(CondicionBusinessOutDto condicionBusinessOutDto) {
 		CondicionServiceOutDto condicionServiceOutDto = mapper.map(condicionBusinessOutDto, CondicionServiceOutDto.class);
 		
 		return condicionServiceOutDto;
 	}
-
 
 }
