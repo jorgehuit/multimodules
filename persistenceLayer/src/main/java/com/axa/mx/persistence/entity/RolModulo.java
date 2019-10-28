@@ -1,6 +1,7 @@
 package com.axa.mx.persistence.entity;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -44,5 +45,32 @@ public class RolModulo {
 
 	@OneToMany(mappedBy = "rolModulo")
 	private Set<PermisoOperacion> permisosOperacion = new HashSet<>();
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		RolModulo other = (RolModulo) obj;
+		return Objects.equals(claveRol, other.claveRol) && Objects.equals(descripcionRol, other.descripcionRol)
+				&& Objects.equals(id, other.id) && Objects.equals(nombreRol, other.nombreRol);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(claveRol, descripcionRol, id, nombreRol);
+	}
+
+	@Override
+	public String toString() {
+		return "RolModulo [id=" + id + ", claveRol=" + claveRol + ", nombreRol=" + nombreRol + ", descripcionRol="
+				+ descripcionRol + "]";
+	}
 
 }

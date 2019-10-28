@@ -1,5 +1,8 @@
 package com.axa.mx.application.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -24,10 +27,14 @@ public class SwaggerConfig {
 				.paths(PathSelectors.any())
 				.build();
 	}
-	
+
 	@Bean("dozerBeanMapper")
 	@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 	public DozerBeanMapper dozerBeanMapper() {
-		return new DozerBeanMapper();
+		List<String> mappingFiles = new ArrayList<>();
+		mappingFiles.add("dozerJdk8Converters.xml");
+		DozerBeanMapper dozerBeanMapper = new DozerBeanMapper();
+		dozerBeanMapper.setMappingFiles(mappingFiles);
+		return dozerBeanMapper;
 	}
 }

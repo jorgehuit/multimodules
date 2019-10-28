@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
 	public UsuarioServiceDto getUserByClaveUsuarioLDAP(String username) {
 		log.info("Service buscando usuario...");
 		UsuarioBusinessDto usuario = userBusiness.getUserByClaveUsuarioLDAP(username);
-		log.info("Service fin buscando usuario...");
 		return mapper.map(usuario, UsuarioServiceDto.class);
 	}
 

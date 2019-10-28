@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "COMPONENTES")
+@Table(name = "MODULOS")
 public class Modulo {
 	@Id
 	@GeneratedValue

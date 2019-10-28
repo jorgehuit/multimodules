@@ -32,7 +32,6 @@ public class UserController {
 	public ResponseEntity<UsuarioApiDto> getByUserName(@RequestHeader("username") String username) {
 		log.info("Controller buscando usuario...");
 		UsuarioServiceDto usuario = userService.getUserByClaveUsuarioLDAP(username);
-		log.info("Controller fin buscando usuario...");
 		return new ResponseEntity<>(mapper.map(usuario, UsuarioApiDto.class), HttpStatus.OK);
 	}
 

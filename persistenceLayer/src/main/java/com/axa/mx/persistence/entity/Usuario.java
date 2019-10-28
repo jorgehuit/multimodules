@@ -1,6 +1,7 @@
 package com.axa.mx.persistence.entity;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -50,5 +51,33 @@ public class Usuario {
 
 	@OneToMany(mappedBy = "usuario")
 	private Set<Evento> eventos = new HashSet<>();
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Usuario other = (Usuario) obj;
+		return activo == other.activo && Objects.equals(claveUsuario, other.claveUsuario)
+				&& Objects.equals(claveUsuarioLDAP, other.claveUsuarioLDAP) && Objects.equals(email, other.email)
+				&& Objects.equals(id, other.id) && Objects.equals(nombreCompleto, other.nombreCompleto);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(activo, claveUsuario, claveUsuarioLDAP, email, id, nombreCompleto);
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", claveUsuario=" + claveUsuario + ", claveUsuarioLDAP=" + claveUsuarioLDAP
+				+ ", nombreCompleto=" + nombreCompleto + ", email=" + email + ", activo=" + activo + "]";
+	}
 
 }

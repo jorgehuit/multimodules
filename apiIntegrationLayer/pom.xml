@@ -75,6 +75,11 @@
 			<artifactId>dozer</artifactId>
 			<version>${dozer.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>io.craftsman</groupId>
+			<artifactId>dozer-jdk8-support</artifactId>
+			<version>1.0.6</version>
+		</dependency>
 
 	</dependencies>
 
